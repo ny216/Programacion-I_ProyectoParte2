@@ -15,13 +15,16 @@ def mostrar_menu():
     print()
 
 while True:
-
+    #el usuario elige una opcion del menu y se valida esta opcion
     mostrar_menu() #muestra los prints anteriores
+    #usamos .strip para eliminar espacios del input (inicio y final)
     opcion = input("Ingrese una opción [1 - 5]: ").strip()
     print()
+    #si el input no es un numero entre el 1 y 5, el programa vuelve a solicitar un # valido
     while not opcion.isdigit() or int(opcion) not in [1, 2, 3, 4, 5]:
         opcion = input("Opción no válida. Ingrese una opción [1 - 5]: ").strip()
         print()
+    #una vez obtenido un valor valido, se convierte en entreo (int)
     opcion = int(opcion)
 
 
@@ -30,7 +33,9 @@ while True:
         oraci = "Saliendo del programa..."
         for x in oraci:
             time.sleep(0.2)
+            #evita el salto de línea automático de print
             print(x,end="")
+        #tiempo de espera antes de cerrar
         time.sleep(1)
         break  # en este caso ya no es exit, xq ahora estamos usando un bucle
         # es suficiente con romperlo
@@ -171,9 +176,10 @@ while True:
                     #se reinicia el bucle subprincipal --> While true
                     continue
             break
-
+        #el usuario ingresara el tamaño del vehiculo X
         tamaniodex = int(input("Tamaño del auto X (2 o 3): "))
         while not tamaniodex in [2, 3]:
+            #validara que el tamaño sea entre 2 y tres 
             tamaniodex = int(input("Tamaño del auto X (2 o 3): "))
 
         # para saber qué nivel es al momento de guardarlo en el historial
@@ -182,16 +188,16 @@ while True:
             columnas = len(tablero[0])
         else:
             columnas = 0
-
+        #el nivel 1 es un tablero de 8x8
         if filas == 8 and columnas == 8:
             nivel_detectado = 1
-
+        #el nivel 2 es un tablero de 10x10
         elif filas == 10 and columnas == 10:
             nivel_detectado = 2
-
+        #el nivel 3 es un tablero de 12x12
         elif filas == 12 and columnas == 12:
             nivel_detectado = 3
-
+        #si no es ninguno de los anteriores, se considera "otro"
         else:
             nivel_detectado = "Otro"
 
@@ -236,15 +242,19 @@ while True:
         print("\nIniciando juego ... \n")
 
         if not verificarusuarioexiste(usuario):
+            #si el usuario es nuevo, tiene que empezar desde el nivel 1
             niveli= 1
+            #avanza automáticamente por los 3 niveles
             while niveli <= 3:
                 print(f"\nCargando nivel {niveli}...")
                 time.sleep(1)
+                #es un import dinamico de acuerdo al nivel actual
 
                 resultado = nivelitos(usuario, niveli)
-
+                #cada vez que gana, pasa automáticamente al siguiente nivel
                 if resultado == "Ganaste":
                     niveli += 1
+                #si no gane, se sale del bucle
                 else:
                     break
 
@@ -254,23 +264,29 @@ while True:
 
         # si el usuario existe en el historial--------------------------------------------------------
         elif verificarusuarioexiste(usuario):
+            #si el usuario es verdadero, le dara nuevamnete la bienvenida 
             print()
             print(f"Hola de nuevo, {usuario}!")
+            #le pregunta que nivel quiere jugar (solo los que ya paso)
             nivel = input("Ingrese el nivel que desea jugar: ").strip()
-
+            #debe validar el nivel ingresado 
             while not nivel.isdigit() or int(nivel) not in [1, 2, 3]:
                 nivel = input("Nivel inválido. Elige 1, 2 o 3: ").strip()
-
+            #convierte el nivel (string) en un entero (int)
             nivelus = int(nivel) #nivel actual es igual al nivel ingresado
 
             while nivelus <= 3:
+                #mientras el nivel sea valido, se ejecutara el nivel seleccionado 
                 resultado = nivelitos(usuario, nivelus)
+                #si gana, sube automaticamente de nivel hasta pasar los 3 
                 if resultado == "Ganaste":
                     nivelus += 1
+                #si no gana, se queda en el mismo nivel y sale del bucle 
                 else:
                     break
 
             print("\nRegresando al menú principal...\n")
             time.sleep(1)
             #automáticamente continúa el ciclo del menu
+
 
