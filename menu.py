@@ -273,3 +273,4 @@ while True:
             print("\nRegresando al menú principal...\n")
             time.sleep(1)
             #automáticamente continúa el ciclo del menu
+
