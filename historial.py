@@ -187,6 +187,11 @@ def mostrar_estadisticas():
         print(f"Jugador con más victorias:", f"{jugador_top:>16} ({mayor_numero_de_victorias:} victorias)\n")
 
         print("Partidas por nivel:")
+        
+        #sorted --> crea un nueva lista de tuplas 
+        #se ordena por el valor inicial de cada tupla --> viene a ser la clave del diccionario
+        #al venir de un archivo todo es leido como str
+        #comparación por su valor ASCII
         for niv, cant in sorted(niveles_cantidad.items()):
             print(f"{"Nivel":>9}", f"{niv}: {cant} partidas")
         print()
@@ -194,4 +199,5 @@ def mostrar_estadisticas():
 
     except FileNotFoundError:
         print("No hay historial guardado aún.")
+
 
