@@ -1,6 +1,5 @@
 import random
 from historial import guardar
-from nivelautomatico import resolver_automaticamente
 
 def nivelitos(usuario, nivel):
     #configuracion o detalles generales de cada nivel
@@ -41,19 +40,16 @@ def nivelitos(usuario, nivel):
     print("          El auto X se mueve libremente, el resto de autos")
     print("          se mueve de acuerdo a su posición\n")
 
-    # esto crea el tabla con espacios en un tamanio 8x8
-    tablero = [[" " for columna in range(columnas)] for fila in range(filas)]
+    # esto crea el tabla con puntos para distinguir los espacios libres
+    tablero = [["." for columna in range(columnas)] for fila in range(filas)]
 
     # esto pone los bordes o muros al tablero, siendo representados con #
-    for i in range(filas):
-        for j in range(columnas):
-            if i == 0 or i == filas - 1 or j == 0 or j == columnas - 1:
+    for f in range(filas):
+        for c in range(columnas):
+            if f == 0 or f == filas - 1 or c == 0 or c == columnas - 1:
                 tablero[i][j] = "#"
 
-            else:
-                tablero[i][j] = "."
-
-    # auto X
+    # auto X -------------------------------------------------------------------------------------------------------------------
     fauto = random.randint(1, filas - 2)  # esto define una fila aleatoria evitando bordes
                                              # de la 1 a la 6
     cauto = random.randint(1, columnas - (tamaniodex + 1))  # igual, pero se le resta el espacio que ocupa x y uno mas del muro
@@ -61,16 +57,16 @@ def nivelitos(usuario, nivel):
                                       #a veces ocupa 2 o 3 espacios
         tablero[fauto][cauto + letrita] = "X"
 
-    # esto crea la salida aleatoriamente en el lado derecho
+    # esto crea la salida aleatoriamente en el lado derecho --------------------------------------------------------------------
     while True:
         fsalida = random.randint(1, filas - 2)  # escoge una fila aleatoria, evitando
                                                    # borde inferior y superior
-                                                   # el menos dos es pq el indice mayor siempre es uno menos
-        if fsalida != fauto:
-            tablero[fsalida][-1] = " "
+                                                   # "-2" es pq el indice mayor siempre es uno menos
+        if fsalida != fauto:    
+            tablero[fsalida][-1] = " "    # "-1" -> pq la salida siempre se ubica en la última columna    
             break
 
-    #autos extra
+    #autos extra ------------------------------------------------------------------------------------------------------
     for auto in autosextra: #recorremos la lista de autos, representado por letra
         colocado = False #esto indica que aun no se ha colocado el auto, cambia al final del bucle
         intentos = 0 #contador de intentos
@@ -120,7 +116,6 @@ def nivelitos(usuario, nivel):
 
 def resolver_manualmente (tablero, tamaniodex, usuario, nivel, autosextra):
 
-    # en caso sea manual
     modo = "Manual"
     movimientos = 0
     while True:
@@ -195,7 +190,6 @@ def mostrar_tablero(tablero):
     for fila in tablero:
         print("".join(fila))
     print()
-
 
 def mover_auto(tablero, letra, direccion, mov, tamaniodex):
     filas = len(tablero)
@@ -297,5 +291,6 @@ def mover_auto(tablero, letra, direccion, mov, tamaniodex):
     #colocamos el auto en su nueva posición
     for (f, c) in coordenadas:
         tablero[f][c] = letra
+
 
     return True
