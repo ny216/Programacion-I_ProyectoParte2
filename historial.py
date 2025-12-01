@@ -153,7 +153,7 @@ def mostrar_estadisticas():
 
             # contar partidas por nivel
             # is digit verifica si el nivel es digito
-            if nivel.isdigit() or nivel == "Duda":
+            if nivel.isdigit() or nivel == "Otro":
                 if nivel not in niveles_cantidad:
                     niveles_cantidad[nivel] = 0
                 niveles_cantidad[nivel] += 1
@@ -199,5 +199,6 @@ def mostrar_estadisticas():
 
     except FileNotFoundError:
         print("No hay historial guardado aún.")
+
 
 
