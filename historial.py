@@ -21,7 +21,6 @@ def guardar(usuario, nivel, resultado, movimientos, modo):
         # linea se agrega después de la info que ya estaba en el archivo, sin eliminar nada previo
         archivo.write(linea)
 
-
 def mostrarh():
     try:  #usamos try para que en caso se presente algún error, el código no se pare
         with open("historial.csv.", "r") as archivo: # historia.txt(abre el archivo) y "r" lo lee
@@ -111,7 +110,6 @@ def imprimir_historial(historial):
 
         print(f"| {nombre}| {fecha_hora} | {nivel} | {resultado} | {movimientos} | {modo} |")
 
-
 def mostrar_estadisticas():
     try:
         with open("historial.csv", "r") as archivo:
@@ -166,7 +164,6 @@ def mostrar_estadisticas():
         elif total_partidas == 0:
             promedio_movimientos = 0
 
-
         # detectar el jugador con más victorias
         jugador_top = "N/A"
         mayor_numero_de_victorias = 0
@@ -199,6 +196,3 @@ def mostrar_estadisticas():
 
     except FileNotFoundError:
         print("No hay historial guardado aún.")
-
-
-
