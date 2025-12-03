@@ -307,11 +307,12 @@ def mover_auto(tablero, letra, direccion, mov, tamaniodex):
                     return False
 
         #si paso todas las validaciones anteriores, movemos el auto un paso
+        #las coordenadas seran llenadas con las nuevas filas y columnas en nuevas  
         coordenadas = []
         for (nuevafila, nuevacolumna) in nuevas:
             coordenadas.append((nuevafila, nuevacolumna))
 
-    #borramos las posiciones antiguas
+    #borramos las posiciones antiguas reemplazando las celdas con "."
     for i in range(filas):
         for j in range(columnas):
             if tablero[i][j] == letra:
@@ -321,6 +322,7 @@ def mover_auto(tablero, letra, direccion, mov, tamaniodex):
     for (f, c) in coordenadas:
         tablero[f][c] = letra
 
-
+    #retornamos TRUE para finalizar la funcion 
     return True
+
 
