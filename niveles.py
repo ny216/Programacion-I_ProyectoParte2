@@ -1,7 +1,9 @@
-import random
-from historial import guardar
+import random #importamos la libreria random para resultados aleatorios (posiciones de autos) 
+from historial import guardar #importamos la funcion guardar para almacenar los resultados del jugador 
 
 def nivelitos(usuario, nivel):
+    #funcion con dos argumentos (usuario, nivel) obtenidos previamente al momento de elegir en el menu la opcion 1 
+    #detalles es un diccionario con claves 1,2,3 que son los niveles de juego y los valores los detalles por nivel
     #configuracion o detalles generales de cada nivel
     detalles = {
         1: {
@@ -27,56 +29,68 @@ def nivelitos(usuario, nivel):
             "autosextra": ["A", "B", "C", "D", "E", "F", "G", "H"]
         }}
 
-    cfg = detalles[nivel]
-    filas = cfg["filas"] #saca los valores de filas
-    columnas = cfg["columnas"] #hace lo mismo pero con columnax
-    tamaniodex = cfg["tamaniodex"]
-    tamaniohorizontal = cfg["tamaniohorizontal"]
-    tamaniovertical = cfg["tamaniovertical"]
-    autosextra = cfg["autosextra"]
+    cfg = detalles[nivel] #cfg espera la clave de nivel para cargar los valores a configurar 
+    filas = cfg["filas"] #obtiene el valor de la clave filas
+    columnas = cfg["columnas"] #obtiene el valor de la clave columnas
+    tamaniodex = cfg["tamaniodex"] #obtiene el valor de la clave tamniox
+    tamaniohorizontal = cfg["tamaniohorizontal"] #obtiene el valor de la clave tamaniohorizontal
+    tamaniovertical = cfg["tamaniovertical"] #obtiene el valor de la clave tamniovertical 
+    autosextra = cfg["autosextra"] #obtiene el valor de la clave autosextra 
 
+    #imprimimos el mensaje de bienvenida segun el nivel 
     print(f"\nBienvenido al nivel {nivel}")
     print("Recuerda: El objetivo es sacar el auto 'X' por la derecha.")
     print("          El auto X se mueve libremente, el resto de autos")
     print("          se mueve de acuerdo a su posición\n")
 
-    # esto crea el tabla con puntos para distinguir los espacios libres
+    #esto crea el tabla con puntos para distinguir los espacios libres
+    #version lambda de un for aninado que recorre e imprime "." en todas las filas y columnas  
     tablero = [["." for columna in range(columnas)] for fila in range(filas)]
 
-    # esto pone los bordes o muros al tablero, siendo representados con #
+    #esto pone los bordes o muros al tablero, siendo representados con #
     for f in range(filas):
         for c in range(columnas):
             if f == 0 or f == filas - 1 or c == 0 or c == columnas - 1:
                 tablero[i][j] = "#"
 
     # auto X -------------------------------------------------------------------------------------------------------------------
-    fauto = random.randint(1, filas - 2)  # esto define una fila aleatoria evitando bordes
-                                             # de la 1 a la 6
+    #tiene una posicon inicial aleatoria diferente a la fila inferior (fila-1) y a la fila superior (0)
+    fauto = random.randint(1, filas - 2)  #esto define una fila aleatoria evitando bordes
+                                             #de la 1 a la 6
+    #tiene una posicon inicial aleatoria diferente a la columna izquierda (0) y a 
+    #la columna derecha dependiendo del tamanio del auto X (columnas-1)
     cauto = random.randint(1, columnas - (tamaniodex + 1))  # igual, pero se le resta el espacio que ocupa x y uno mas del muro
+    #imprimimos cada letra que contiene el tamanio del auto X (2 o 3) 
     for letrita in range(tamaniodex): #ahora lo ponemos asi pq es variable
                                       #a veces ocupa 2 o 3 espacios
         tablero[fauto][cauto + letrita] = "X"
 
     # esto crea la salida aleatoriamente en el lado derecho --------------------------------------------------------------------
+    #validamos la posicion correcta del espacio de la salida del tabero (siempre lado derecho)
     while True:
+        #es una posicion aleatoria diferente al borde superior(0) e inferior(-1) 
         fsalida = random.randint(1, filas - 2)  # escoge una fila aleatoria, evitando
                                                    # borde inferior y superior
                                                    # "-2" es pq el indice mayor siempre es uno menos
-        if fsalida != fauto:    
+        if fsalida != fauto:  #la fila de salida y la fila inicial del auto X deben ser diferentes 
+            #se imprime un espacio vacio en la columna derecha siendo esta la salida
             tablero[fsalida][-1] = " "    # "-1" -> pq la salida siempre se ubica en la última columna    
             break
 
     #autos extra ------------------------------------------------------------------------------------------------------
-    for auto in autosextra: #recorremos la lista de autos, representado por letra
+    #recorremos la lista de autos extras 
+    for auto in autosextra: 
         colocado = False #esto indica que aun no se ha colocado el auto, cambia al final del bucle
-        intentos = 0 #contador de intentos
+        intentos = 0 #contador de intentos para evitar un bucle infinito 
         while not colocado and intentos < 100: #el max de intetos evita el bucle infinito
             orientacion = random.choice(["horizontal", "vertical"])
             fila = random.randint(1, filas - 2) #el menos 2 evita que toquemos los muros
             col = random.randint(1, columnas - 2)
             intentos += 1 #sumamos un intento al intetar colocar el auto
 
+            #validamos si las posiciones aletorias estan desocupadas 
             if orientacion == "horizontal": #en caso sea horizontal
+                #si la posicion columna + tamaniohorizontal -1 es menor que el borde, el espacio esta libre
                 if col+ tamaniohorizontal - 1 <= columnas - 2:
                 #col es la columna de donde partimos, le sumamos el tamanio del auto
                 #columnas - 2 es la ultima columna que no es muro
@@ -101,6 +115,7 @@ def nivelitos(usuario, nivel):
             else: #en cambio, si el auto es vertical, mismo proceso pero en fila
                 if fila + tamaniovertical - 1 <= filas - 2:
                     espaciolibre = True
+                    #recorremos los valores de 0 a tamaniovertical(tamanio del auto) 
                     for k in range(tamaniovertical):
                         if tablero[fila + k][col] != ".":
                             espaciolibre = False
@@ -109,18 +124,24 @@ def nivelitos(usuario, nivel):
                         for k in range(tamaniovertical):
                             tablero[fila + k][col] = auto
                         colocado = True
-
+    #se imprime el tablero con los autos y la salida en consola 
     mostrar_tablero(tablero)
 
+    #invocamos a la funcion resolver_manualmente con todos sus argumentos 
     return resolver_manualmente(tablero,tamaniodex, usuario, nivel, autosextra)
 
+#esta funcion guarda la cantidad de movimientos por usuario y nivel, y la condicion de ganado o abandonado  
 def resolver_manualmente (tablero, tamaniodex, usuario, nivel, autosextra):
 
+    #configuraciones iniciales 
     modo = "Manual"
     movimientos = 0
+    #se ejecutara siempre que el usuario no escriba la palabra "fin"
     while True:
+        #el usuario selecciona el auto que quiere mover 
         seleccion = input("\nSeleccione un auto (letra) o escriba 'fin' para salir: ").strip().upper()
 
+        #condiciona a que el jugador termine el juego si escribe la palabra "fin" 
         if seleccion == "FIN": #si el jugador desea salir
         # guardamos la info en la funcion guardar para el historial
             print("Abandonaste la partida.")
@@ -129,26 +150,31 @@ def resolver_manualmente (tablero, tamaniodex, usuario, nivel, autosextra):
         #pq te hace salir del juego pero lo del menu es un bucle que no termina
         #al menos de que le pongas la opcion 3
 
+        #si la opcion es mas de una letra, le vuelve a pedir al usuario su input 
         if len(seleccion) != 1:
             print()
             print("Por favor ingrese solo 1 letra")
             mostrar_tablero(tablero)
             continue
-
+            
+        #si la opcion no es una letra valida, le vuelve a pedir al usuario su input 
         if not seleccion.isalpha():
             print("\nPor favor, ingrese una letra válida.")
             mostrar_tablero(tablero)
             continue
-
+            
+        #si la letra no se encuetra en el tablero, le vuelve a pedir al usuario su input
         if seleccion not in autosextra and seleccion != 'X':
             print()
             print("Letra no existente.")
             mostrar_tablero(tablero)
             continue
-
+            
+        #imprimimos las opciones de movimeinto que tiene el auto  
         direccion = input("Mover (U/D/L/R): ").strip().upper() #el strip es por si el usuario
                                                                # comete error de poner espacios adicionales
         # u es UP, d es DOWN, l es LEFT y r es RIGHT
+        #mientras que el usuario no ingrese un movimiento valido, le volvera a pedir su input 
         while direccion not in ["U", "D", "L", "R"]:
         #valida la direccion ingrsada
             direccion = input("Mover (U/D/L/R): ").strip().upper()
@@ -168,7 +194,7 @@ def resolver_manualmente (tablero, tamaniodex, usuario, nivel, autosextra):
 
         #si X logra salir del tablero, el usuario gana
         if resultado == "Ganaste": #en caso el usuario gan
-            movimientos += mov #suamos los movimientos de la jugada ganaddora
+            movimientos += mov #sumamos los movimientos de la jugada ganaddora
             mostrar_tablero(tablero)
             print("\n¡Felicidades! Lograste sacar el auto principal")
             guardar(usuario, nivel, "Gano", movimientos, modo)
@@ -182,33 +208,34 @@ def resolver_manualmente (tablero, tamaniodex, usuario, nivel, autosextra):
             movimientos = movimientos + mov #suma movimientos realizados siempre y cuando sean validos
             mostrar_tablero(tablero)
 
-#la funcion que estamos aca ya no es necesaria, pues en
-#def mover_auto se detecta la victoria de manera clara cuando X
-#cruza la salid
-
+#funcion que imprime el tablero en consola 
 def mostrar_tablero(tablero):
     for fila in tablero:
         print("".join(fila))
     print()
-
+    
+#funcion que permite y guarda los movimientos de los autos
 def mover_auto(tablero, letra, direccion, mov, tamaniodex):
-    filas = len(tablero)
+    filas = len(tablero) 
     columnas = len(tablero[0])
 
-    #recorremos todas la matriz hasta encontrar las celdas donde
+    #recorremos toda la matriz hasta encontrar las celdas donde
     #esten las letras del auto que se desea mover
     coordenadas = []
     for i in range(filas):
         for j in range(columnas):
             if tablero[i][j] == letra:
-                coordenadas.append((i, j))
+                coordenadas.append((i, j)) #dos pares de coordenadas pq son dos letras
+    #si el largi de las coordenadas es 0 es pq no hay un auto 
     if len(coordenadas) == 0:
         return False
 
+    #con el sort ordenamos las coordenadas para buscarlas 
     coordenadas.sort()
-    #determinamos la horientacion orientación (horizontal o vertical)
+    #determinamos la orientación (horizontal o vertical)
     horizontal = True #asumimos que esta en horizontal
     base = coordenadas[0][0] #esta es la primera fila encontrada
+    #recorremos las filas y columnas de las coordenadas 
     for (f, c) in coordenadas:
         if f != base: #si en algun momento la fila es diferente
                       #a la primera fila que vimos
@@ -222,10 +249,12 @@ def mover_auto(tablero, letra, direccion, mov, tamaniodex):
             return False
 
   #hace el proceso por cada movimiento que quiera hacer
+    #el mov es el valor del argumento que se adquiere del usuario 
     for mover in range(mov):
         #copiamos las coordenadas
         coordenadas_actuales = [] #no podemos poner coordenadas_actuales = coordenadas
                                   # porque no seria crear una copia y afectaria a coordenadas
+        #recorremos las posiciones de las coordenadas y las guardamos en las coordenadas actuales 
         for (f, c) in coordenadas:
             coordenadas_actuales.append((f, c))
 
@@ -252,7 +281,7 @@ def mover_auto(tablero, letra, direccion, mov, tamaniodex):
                     print("¡Ganaste!")
                     return "Ganaste"
                 else:
-                    return False #en caso no sea asi, no gano y yap
+                    return False #en caso no sea asi, aun no gano 
 
             #si la nueva posicion se sobrepasa del tama;o del tablero, el movimiento es invalido
             if nuevafila < 0 or nuevafila >= filas or nuevacolumna < 0 or nuevacolumna >= columnas:
@@ -294,3 +323,4 @@ def mover_auto(tablero, letra, direccion, mov, tamaniodex):
 
 
     return True
+
