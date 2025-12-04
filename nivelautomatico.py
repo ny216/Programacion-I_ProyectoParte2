@@ -1,7 +1,6 @@
 import time
 from copy import deepcopy
 from collections import deque
-from historial import guardar
 
 def mostrar_tablero(tablero): #solo muestra el tablero
     for fila in tablero:
@@ -298,4 +297,5 @@ def resolver_automaticamente(tablero, tamaniodex=None, delay=2):
         paso += 1
 
     print("La secuencia terminó sin que 'X' salga del tablero (esto no debería pasar).")
+
     return "Sin solucion", 0
