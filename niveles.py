@@ -48,9 +48,9 @@ def nivelitos(usuario, nivel):
     tablero = [["." for columna in range(columnas)] for fila in range(filas)]
 
     #esto pone los bordes o muros al tablero, siendo representados con #
-    for f in range(filas):
-        for c in range(columnas):
-            if f == 0 or f == filas - 1 or c == 0 or c == columnas - 1:
+    for i in range(filas):
+        for j in range(columnas):
+            if i == 0 or i == filas - 1 or j == 0 or j == columnas - 1:
                 tablero[i][j] = "#"
 
     # auto X -------------------------------------------------------------------------------------------------------------------
@@ -324,5 +324,6 @@ def mover_auto(tablero, letra, direccion, mov, tamaniodex):
 
     #retornamos TRUE para finalizar la funcion 
     return True
+
 
 
